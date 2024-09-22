@@ -18,11 +18,12 @@ matmod = gets.chomp.tr(" ", "").chars
 buffer = ""
 
 matmod.each_with_index do |sym, indx|
-	show_stack(out, stack)
-	if sym.match("[1-9a-zA-Z\.]{1}")
+	if sym.match("[0-9a-zA-Z\.]{1}")
 		buffer += sym
-	elsif "-+".include?(sym) and stack.empty? or matmod[indx-1] == "("
+
+	elsif sym == "-" and stack.empty? or matmod[indx-1] == "("
 		buffer += sym
+
 	elsif "()^*/+-".include?(sym)
 		case sym
 		when "("
@@ -46,15 +47,14 @@ matmod.each_with_index do |sym, indx|
 		buffer = ""
 	end
 end
-show_stack(out, stack)
+
 if buffer != ""
 	out << buffer
 end
-show_stack(out, stack)
+
 while stack.length != 0
 	out << stack.pop
 end
-show_stack(out, stack)
 
 out.concat(stack)
 puts "Reverse polish notation: #{out.join(" ")}"
